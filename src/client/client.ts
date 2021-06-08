@@ -3,31 +3,54 @@ import { OrbitControls } from '/jsm/controls/OrbitControls'
 
 const scene: THREE.Scene = new THREE.Scene()
 
-const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+const camera1 = new THREE.PerspectiveCamera(75, 1, 0.1, 10)
+const camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
+const camera3 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
+const camera4 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
 
-const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
+const canvas1 = <HTMLCanvasElement>document.getElementById("c1")
+const canvas2 = <HTMLCanvasElement>document.getElementById("c2")
+const canvas3 = <HTMLCanvasElement>document.getElementById("c3")
+const canvas4 = <HTMLCanvasElement>document.getElementById("c4")
 
-const controls = new OrbitControls(camera, renderer.domElement)
+const renderer1 = new THREE.WebGLRenderer({ canvas: canvas1 })
+const renderer2 = new THREE.WebGLRenderer({ canvas: canvas2 })
+const renderer3 = new THREE.WebGLRenderer({ canvas: canvas3 })
+const renderer4 = new THREE.WebGLRenderer({ canvas: canvas4 })
 
-const geometry: THREE.BoxGeometry = new THREE.BoxGeometry()
-const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+renderer1.setSize(400, 400)
+renderer2.setSize(400, 400)
+renderer3.setSize(400, 400)
+renderer4.setSize(400, 400)
+//document.body.appendChild(renderer.domElement)
 
-const cube: THREE.Mesh = new THREE.Mesh(geometry, material)
+const controls = new OrbitControls(camera1, renderer1.domElement)
+
+const geometry = new THREE.BoxGeometry()
+const material = new THREE.MeshBasicMaterial({ color: 0x00ffa0, wireframe: true })
+
+const cube = new THREE.Mesh(geometry, material)
 scene.add(cube)
 
-camera.position.z = 3
+camera1.position.z = 2
+camera2.position.y = 1
+camera2.lookAt(new THREE.Vector3(0, 0, 0))
+camera3.position.z = 1
+camera4.position.x = 1
+camera4.lookAt(new THREE.Vector3(0, 0, 0))
 
-var animate = function () {
+const animate = function () {
     requestAnimationFrame(animate)
 
     cube.rotation.x += 0.01
     cube.rotation.y += 0.01
 
-    controls.update();
+    controls.update()
 
-    renderer.render(scene, camera)
+    renderer1.render(scene, camera1)
+    renderer2.render(scene, camera2)
+    renderer3.render(scene, camera3)
+    renderer4.render(scene, camera4)
 }
 
 animate()
